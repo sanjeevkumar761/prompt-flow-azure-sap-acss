@@ -1,0 +1,53 @@
+id: chat_with_wikipedia
+name: Chat with Wikipedia
+environment:
+  python_requirements_txt: requirements.txt
+inputs:
+  chat_history:
+    type: list
+    default:
+    - inputs:
+        question: What is ChatGPT?
+      outputs:
+        answer: ChatGPT is a chatbot product developed by OpenAI. It is powered by the
+          Generative Pre-trained Transformer (GPT) series of language models,
+          with GPT-4 being the latest version. 
+    is_chat_input: false
+    is_chat_history: true
+  question:
+    type: string
+    default: Show me list of SAP SIDs
+    is_chat_input: true
+outputs:
+  answer:
+    type: string
+    reference: ${augmented_chat.output}
+    is_chat_output: true
+nodes:
+
+- name: get_acss_details
+  type: python
+  source:
+    type: code
+    path: get_acss_details.py
+  use_variants: false
+
+- name: augmented_chat
+  type: llm
+  source:
+    type: code
+    path: augmented_chat.jinja2
+  inputs:
+    deployment_name: gpt-4
+    temperature: 0.8
+    top_p: 1
+    response_format:
+      type: text
+    presence_penalty: 0
+    frequency_penalty: 0
+    chat_history: ${inputs.chat_history}
+    contexts: ${get_acss_details.output}
+    question: ${inputs.question}
+  connection: azure_open_ai_connection
+  api: chat
+  use_variants: false
