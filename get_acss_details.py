@@ -35,31 +35,39 @@ def get_acss_details():
         #print(all_objects)
 
         for object in all_objects:
-            print("Obj--start")
+            print("Showing object key details -- starting")
+            print(object.name)
             print(object)
-            print("Obj--end")
+            print("Showing object key details -- ending")
             #vis_info = object.name + ";" + object.environment + ";" + str(object.configuration.infrastructure_configuration)
             vis_id = object.name
             vis_location = object.location
             vis_environment = object.environment
+            vis_sap_product = object.sap_product
             vis_status = object.status
             vis_health = object.health 
+            vis_provisioning_state = object.provisioning_state
+            vis_state = object.state
 
-            infra_object = object.configuration.infrastructure_configuration
-            vis_rg = infra_object.app_resource_group
-            print("######VIS1")
-            print(object.system_data)
-            print("######VIS2")
+            #infra_object = object.configuration.infrastructure_configuration
+            #vis_rg = infra_object.app_resource_group
+            #print("######VIS1")
+            #print(object.system_data)
+            print(object.name + " ######CONFIGURATION")
             print(object.configuration)
+            #print(object.configuration.configuration_type)
+            #print(object.configuration.infrastructure_configuration)
+            #print(object.configuration.infrastructure_configuration.centralServer)
+            #print(object.configuration.software_configuration)
             #print(object.configuration.infrastructure_configuration.os_sap_configuration)
-            print("######VIS3")
-            print(object.configuration.infrastructure_configuration)
-            print(object.configuration.infrastructure_configuration.virtual_machine_configuration)
-            vis_app_vm_size = object.configuration.infrastructure_configuration.virtual_machine_configuration.vm_size
-            print(vis_app_vm_size)
-            print("VIS4")
-            print(object.configuration.software_configuration)
-            vis_software = object.configuration.software_configuration.software_version
+            #print("######VIS3")
+            #print(object.configuration.infrastructure_configuration)
+            #print(object.configuration.infrastructure_configuration.virtual_machine_configuration)
+            #vis_app_vm_size = object.configuration.infrastructure_configuration.virtual_machine_configuration.vm_size
+            #print(vis_app_vm_size)
+            #print("VIS4")
+            #print(object.configuration.software_configuration)
+            #vis_software = object.configuration.software_configuration.software_version
 
             #App
             #vis_app_vm_size = infra_object.application_server.virtual_machine_configuration.vm_size
@@ -74,11 +82,14 @@ def get_acss_details():
             #vis_db_instance_count = infra_object.database_server.instance_count
 
             #vis_info = (vis_id, vis_rg, vis_location, vis_environment, vis_app_vm_size, vis_app_image, vis_app_sku, vis_app_instance_count, vis_db_vm_size, vis_db_image, vis_db_sku, vis_db_instance_count, vis_status, vis_health)
-            vis_info = (vis_id, vis_rg, vis_location, vis_environment, vis_app_vm_size, vis_software, vis_status, vis_health)
-            print(vis_info[4])
+            #vis_info = (vis_id, vis_rg, vis_location, vis_environment, vis_app_vm_size, vis_software, vis_status, vis_health)
+            vis_info = (vis_id, vis_location, vis_environment, vis_sap_product, vis_status, vis_health, vis_provisioning_state, vis_state)
+            #vis_info = ("S01", "EastUS", "PRD", "S4", "Healthy", "Healthy", "Healthy", "Healthy")
+            print("Objecte details")
+            print(vis_info)
             rg_list.append(vis_info)
 
-            print(rg_list)
+            #print(rg_list)
     except Exception as e:
         return ("Get VIS info failed with error: {}".format(e), os.environ['AZURE_TENANT_ID'], "No available content")
 
